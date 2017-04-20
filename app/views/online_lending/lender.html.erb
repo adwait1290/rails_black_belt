@@ -1,0 +1,87 @@
+<%= content_for :title do %>
+	<title>Lender Page</title>
+<% end %>
+
+<p>Name : <%= @lender.first_name %> <%= @lender.last_name %></p>
+<p>Account Balance: $ <%= @lender.money %></p>
+
+<%= link_to 'Logout', sessions_destroy_path %>
+
+<h2>List of people in need of help:</h2>
+<table class="table table-stripped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Need Money For</th>
+			<th>Reason for Loan</th>
+			<th>Amount Needed</th>
+			<th>Amount Raised</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+	<% if @borrowers %>
+		<% @borrowers.each do |borrower| %>
+		<tr>
+			<td><%= borrower.first_name %> <%= borrower.last_name %></td>
+			<td><%= borrower.purpose %></td>
+			<td><%= borrower.description %></td>
+			<td>$ <%= borrower.money %></td>
+			<td>$
+				<% if borrower.raised %>
+					<%= borrower.raised %>
+				<% else %>
+					0
+				<% end %>
+			</td>
+			<td>
+			<% if @lender.money > 0 %>
+				<form class="lend" action="<%= lend_money_path borrower.id %>" method="post">
+					<% @money = nil %>
+					<% if borrower.raised.nil? %>
+						<% borrower.raised = 0 %>
+					<% end %>
+					<% if @lender.money > borrower.money - borrower.raised %>
+						<% @money = borrower.money - borrower.raised %>
+					<% else %>
+						<% @money = @lender.money %>
+					<% end %>
+					<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+					<input type="number" name="amount" min="1" max="<%= @money %>">
+					<input type="submit" value="Lend">
+				</form>
+			<% end %>
+			</td> 
+		</tr>
+		<% end %>
+	<% end %>
+	</tbody>
+</table>
+
+<h2>List of people you have lent money to:</h2>
+<table class="table table-stripped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Need Money For</th>
+			<th>Reason for Loan</th>
+			<th>Amount Needed</th>
+			<th>Amount Raised</th>
+			<th>Amount Lent</th>
+		</tr>
+	</thead>
+	<tbody class="borrowers">
+	<% if @lendees %>
+		<% @lendees.each do |lend| %>
+		<tr>
+			<td><%= lend.first_name %> <%= lend.last_name %></td>
+			<td><%= lend.purpose %></td>
+			<td><%= lend.description %></td>
+			<td>$ <%= lend.money %></td>
+			<td>$ <%= lend.raised %></td>
+			<td>$ <%= lend.amount %></td>
+		</tr>
+		<% end %>
+	<% end %>
+	</tbody>
+</table>

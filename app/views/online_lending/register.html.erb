@@ -1,0 +1,50 @@
+<%= content_for :title do %>
+	<title>Registration Page</title>
+<% end %>
+
+<div class="row">
+	<div class="col-md-6">
+		<h1>Lender</h1>
+		<% if @lender_errors %>
+			<% @lender_errors.each do |error| %>
+				<div class="alert-danger"><%= error %></div>
+			<% end %>
+		<% end %>
+		<form action="/online_lending/lender" method="post">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    		<input type="hidden" name="_method" value="create_lender">
+    		<label>First Name: <input type="text" id="First Name" name="lender[first_name]"></label>
+    		<label>Last Name: <input type="text" id="Last Name" name="lender[last_name]"></label>
+    		<label>Email: <input type="text" id="Email" name="lender[email]"></label>
+    		<label>Password: <input type="password" id="password" name="lender[password]"></label>
+    		<label>Money: <input type="number" id="Money" name="lender[money]"></label>
+    		<input type="submit" class="btn btn-primary" value="Register">
+    	</form>
+
+		<%= link_to 'Already a Member?', online_lending_login_path %>
+	</div>
+
+	<div class="col-md-6">
+		<h1>Borrower</h1>
+		<% if @borrower_errors %>
+			<% @borrower_errors.each do |error| %>
+				<div class="alert-danger"><%= error %></div>
+			<% end %>
+		<% end %>
+
+			<form action="/online_lending/borrower" method="post">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    		<input type="hidden" name="_method" value="create_borrower">
+    		<label>First Name: <input type="text" id="First Name" name="borrower[first_name]"></label>
+    		<label>Last Name: <input type="text" id="Last Name" name="borrower[last_name]"></label>
+    		<label>Email: <input type="text" id="Email" name="borrower[email]"></label>
+    		<label>Password: <input type="password" id="password" name="borrower[password]"></label>
+    		<label>Purpose: <input type="text" id="Purpost" name="borrower[purpose]"></label>
+    		<label>Description: <input type="text" id="Description" name="borrower[description]"></label>
+    		<label>Money: <input type="number" id="Money" name="borrower[money]"></label> 
+    		<input type="submit" class="btn btn-primary" value="Register">
+    	</form>
+
+		<%= link_to 'Already a Member?', online_lending_login_path %>
+	</div>
+</div>

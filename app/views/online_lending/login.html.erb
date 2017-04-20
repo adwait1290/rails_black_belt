@@ -1,0 +1,19 @@
+<%= content_for :title do %>
+	<title>Login Page</title>
+<% end %>
+
+<h1>Login</h1>
+<% if @message %>
+	<p><%= @message %></p>
+<% elsif @error %>
+	<div class="alert alert-danger"><%= @error %></div>
+<% end %>
+<form action="/session" method="post">
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="create">
+    <label>Email:<input type="text" id="email" name="session[email]"></label>
+    <label>Password:<input type="password" id="password" name="session[password]"></label>
+    <input type="submit" value="Login">
+</form>
+<%= link_to 'Click here to register', online_lending_register_path %>
+
